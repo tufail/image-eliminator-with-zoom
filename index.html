@@ -1,0 +1,114 @@
+<html>
+<head>
+	<title>JS image eliminator</title>
+	<style type="text/css">
+     body {
+     	padding: 0;
+     	margin: 0;
+     	background-color: #010b1f;
+     	font-family: Arial;
+     }
+     .image-container {
+     	max-width: 360px;
+     	margin: 20px auto;
+     }
+     h2 {
+     	color: #ffc107;
+     }
+     ul {
+     	list-style-type: none;
+     	padding: 0;
+     	margin: 10px 0;
+     	max-width: 100%;
+     }
+     ul li {
+     	width: 100px;
+     	display: inline-block;
+     	border:1px solid #fff;
+     	position: relative;
+     	cursor: move;
+     }
+     .preview {
+     	 width: 300px;
+     	padding: 10px;
+     	background-color: #fff;
+     	box-shadow: 1px 2px 2px #ccc;
+     	position: fixed;
+     	top: 0;
+     	left: 0; 
+     	z-index: 100;
+
+     }
+     .preview img {
+     	max-width: 100%;
+     }
+
+	</style>
+</head>
+<body>
+  
+   <div class="image-container">
+   	<h2>Rollover Image &amp; Eliminator</h2>
+   	<ul id="images">
+      <li><img data-large="https://source.unsplash.com/collection/12/600x600/?sig=12" src="https://source.unsplash.com/collection/12/100x100/?sig=12"></li>
+      <li><img data-large="https://source.unsplash.com/collection/1163637/600x600/?sig=11" src="https://source.unsplash.com/collection/2/100x100/?sig=11"></li>
+      <li><img data-large="https://source.unsplash.com/collection/2/600x600/?sig=10" src="https://source.unsplash.com/collection/6/100x100/?sig=10"></li>
+      <li><img data-large="https://source.unsplash.com/collection/6/600x600/?sig=9" src="https://source.unsplash.com/collection/6/100x100/?sig=9"></li>
+      <li><img data-large="https://source.unsplash.com/collection/1163637/600x600/?sig=8" src="https://source.unsplash.com/collection/1163637/100x100/?sig=8"></li>
+      <li><img data-large="https://source.unsplash.com/collection/1163637/600x600/?sig=7" src="https://source.unsplash.com/collection/1163637/100x100/?sig=7"></li>
+      <li><img data-large="https://source.unsplash.com/collection/1163637/600x600/?sig=6" src="https://source.unsplash.com/collection/1163637/100x100/?sig=6"></li>
+      <li><img data-large="https://source.unsplash.com/collection/1163637/600x600/?sig=5" src="https://source.unsplash.com/collection/1163637/100x100/?sig=5"></li>
+      <li><img data-large="https://source.unsplash.com/collection/1163637/600x600/?sig=4" src="https://source.unsplash.com/collection/1163637/100x100/?sig=4"></li>
+   	</ul>
+   </div>
+
+
+   <script type="text/javascript"> 
+   var gallerySelector = document.querySelector("#images");
+   
+   //onclick thumb remove item
+   gallerySelector.addEventListener('click', function(e) {
+   	 console.dir(e.target);
+   	 if (e.target.tagName === "IMG") {
+   	 	e.target.parentNode.parentNode.removeChild(e.target.parentNode)
+   	 }
+   });
+
+
+   gallerySelector.addEventListener('mouseover', function(e){
+   	 e.preventDefault();
+    console.log(e.target)
+   	if (e.target.tagName === 'IMG') {
+   		var rollEle = document.createElement('div');
+   		rollEle.className = "preview"; 
+        
+        var rollImg = document.createElement('img');
+        var dataSrc = e.target.dataset.large;
+        rollImg.src = dataSrc;
+        rollEle.appendChild(rollImg);
+
+   		var targetEle = e.target.parentNode;
+   		targetEle.appendChild(rollEle);
+
+   		e.target.addEventListener('mouseout', function handler(d) {
+
+   			var myNode = d.target.parentNode.querySelector('div.preview');
+   			myNode ? myNode.parentNode.removeChild(myNode) : null;
+
+   			e.target.removeEventListener('mouseout', handler, false);
+ 
+   		}, false);
+
+   		e.target.addEventListener('mousemove', function(f) {
+   			rollEle.style.top = f.clientY + 5 + 'px';
+   			rollEle.style.left = f.clientX + 5 + 'px';
+   		});
+   	}
+
+
+   },false)
+
+
+   </script>
+</body>
+</html>  
